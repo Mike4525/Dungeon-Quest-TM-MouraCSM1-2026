@@ -14,4 +14,13 @@ public class PersistentHUD : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject); // the object must be a root object
     }
+
+    public static void ResetInstance()
+    {
+        if (Instance != null)
+        {
+            Destroy(Instance.gameObject);
+            Instance = null;
+        }
+    }
 }

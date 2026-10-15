@@ -5,8 +5,9 @@ public class RollingEnemy : Enemy
     [Header("Rolling Settings")]
     [SerializeField] private float rollSpeed = 15f;
     [SerializeField] private float attackDuration = 2.5f;
-    [SerializeField] private float attackRange = 5f;
+    [SerializeField] private float attackRange = 1f;
     [SerializeField] private float coolDown = 3f;
+    [SerializeField] private LayerMask detectMask; // Ground + Player
 
     private float attackTime = 0f;
     private float cDTimer = 0f;
@@ -62,7 +63,7 @@ public class RollingEnemy : Enemy
     {
         Vector2 rayDirection = facingRight ? Vector2.right : Vector2.left;
         Vector2 rayOrigin = wallCheck != null ? wallCheck.position : transform.position;
-        RaycastHit2D hit = Physics2D.Raycast(rayOrigin, rayDirection, attackRange);
+        RaycastHit2D hit = Physics2D.Raycast(rayOrigin, rayDirection, attackRange, detectMask);
 
         Debug.DrawRay(rayOrigin, rayDirection * attackRange, Color.red);
 

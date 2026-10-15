@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
@@ -5,6 +7,7 @@ public class Enemy : MonoBehaviour
     [Header("Health & Combat")]
     [SerializeField] protected float health;
     [SerializeField] protected float damage;
+    [SerializeField] protected bool contactDamage = true;
 
     [Header("Recoil Settings")]
     [SerializeField] protected float recoilLength = 0.08f; // Reduced from 0.2f for a shorter recoil
@@ -22,6 +25,10 @@ public class Enemy : MonoBehaviour
     protected float recoilTimer;
     protected Rigidbody2D rb;
     protected PlayerController player;
+
+    public event Action<Enemy> Died;
+    [SerializeField] protected float deathDuration = 1f;
+    protected bool isDead;
 
     protected virtual void Awake()
     {
@@ -49,18 +56,16 @@ public class Enemy : MonoBehaviour
 
     protected virtual void Update()
     {
+        if (isDead) return;
+
         if (health <= 0)
         {
-            Destroy(gameObject);
+            Die();
             return;
         }
 
         HandleRecoil();
-
-        if (!isRecoiling)
-        {
-            PatrolCheck();
-        }
+        if (!isRecoiling) PatrolCheck();
     }
 
     protected virtual void FixedUpdate()
@@ -143,8 +148,35 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    protected virtual void Die()
+    {
+        isDead = true;
+
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector2.zero;
+            rb.simulated = false; // no more collisions, so it can't hurt the player or take hits
+        }
+
+        if (TryGetComponent(out Animator anim)) // Stops null exception errors
+        {
+            anim.SetTrigger("Dying");
+        }
+
+        StartCoroutine(DeathRoutine());
+    }
+
+    private IEnumerator DeathRoutine()
+    {
+        yield return new WaitForSeconds(deathDuration);
+        Died?.Invoke(this);
+        Destroy(gameObject);
+    }
+
     public virtual void EnemyHit(float _damageDone, Vector2 _hitDirection, float _hitForce)
     {
+        if (isDead) return;
+
         health -= _damageDone;
 
         if (isRecoiling) return;
@@ -157,9 +189,16 @@ public class Enemy : MonoBehaviour
         rb.linearVelocity = -_hitDirection.normalized * (_hitForce * recoilFactor);
     }
 
-    protected void OnCollisionStay2D(Collision2D _other)
+    public void NotifyPlayerContact() // Layer mask addaptation for collisions with external script
     {
-        if (_other.gameObject.CompareTag("Player") && player != null && !player.pState.invincible)
+        if (isDead) return;
+        OnPlayerContact();
+    }
+
+    protected virtual void OnPlayerContact()
+    {
+        // Default behavior, unchanged: touching hurts (RollingEnemy keeps using this)
+        if (player != null && !player.pState.invincible)
         {
             Attack();
             player.HitStopTime(0.05f, 5, .2f);
@@ -174,7 +213,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private void OnDrawGizmosSelected()
+    protected virtual void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
         Vector2 moveVector = facingRight ? Vector2.right : Vector2.left;

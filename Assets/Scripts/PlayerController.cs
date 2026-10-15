@@ -54,6 +54,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float recoilYTimer = 0;
     [SerializeField] float recoilXSpeed = 30;
     [SerializeField] float recoilYSpeed = 40;
+    [SerializeField] float fireballRecoilSpeed = 10;
+    private bool fireballRecoil = false;
     [Space(5)]
 
     [Header("Health Settings")]
@@ -92,6 +94,12 @@ public class PlayerController : MonoBehaviour
     float castOrHealTimer;
     [Space(5)]
 
+    [Header("Death Settings")]
+    [SerializeField] private float deathAnimTime = 1.2f;
+    public event System.Action Died;
+    private bool ended;   // true once the player has died or won
+    [Space(5)]
+
     [HideInInspector] public PlayerStateList pState;
     private Animator anim;
     private Rigidbody2D rb;
@@ -112,6 +120,7 @@ public class PlayerController : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
+        pState = GetComponent<PlayerStateList>();
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
 
@@ -157,6 +166,7 @@ public class PlayerController : MonoBehaviour
 
     public void ResetPlayerState()
     {
+        ended = false;
         Time.timeScale = 1f;
         restoreTime = false;
         hitStopCoroutine = null;
@@ -288,12 +298,12 @@ public class PlayerController : MonoBehaviour
     {
         if (xAxis < 0)
         {
-            transform.localScale = new Vector2(-1, transform.localScale.y);
+            transform.localScale = new Vector2(-1.3f, transform.localScale.y);
             pState.lookingRight = false;
         }
         else if (xAxis > 0)
         {
-            transform.localScale = new Vector2(1, transform.localScale.y);
+            transform.localScale = new Vector2(1.3f, transform.localScale.y);
             pState.lookingRight = true;
         }
     }
@@ -362,7 +372,6 @@ public class PlayerController : MonoBehaviour
             pState.dashing = false;
             canDash = true;
 
-            // Only clear 'dashed' if on the ground, otherwise ground check will clear it when landing
             if (Grounded())
             {
                 dashed = false;
@@ -479,11 +488,26 @@ public class PlayerController : MonoBehaviour
         {
             if (pState.lookingRight)
             {
-                rb.linearVelocity = new Vector2(-recoilXSpeed, 0);
+                if (fireballRecoil)
+                {
+                    rb.linearVelocity = new Vector2(-fireballRecoilSpeed, 0f);
+                }
+                else
+                {
+                    rb.linearVelocity = new Vector2(-recoilXSpeed, 0);
+                }
+                   
             }
             else
             {
-                rb.linearVelocity = new Vector2(recoilXSpeed, 0);
+                if (fireballRecoil)
+                {
+                    rb.linearVelocity = new Vector2(fireballRecoilSpeed, 0f);
+                }
+                else
+                {
+                    rb.linearVelocity = new Vector2(recoilXSpeed, 0);
+                }
             }
         }
 
@@ -498,7 +522,8 @@ public class PlayerController : MonoBehaviour
             {
                 rb.linearVelocity = new Vector2(rb.linearVelocityX, -recoilYSpeed);
             }
-            airJumpCounter = 0;
+            airJumpCounter = 0; // Neat mechanic that allows an airjump and dash reset upon hitting an enemy while being in the air
+            dashed = false; // Mechanic derived from Hollow Knight
         }
         else if (!pState.casting && !pState.dashing)
         {
@@ -511,6 +536,7 @@ public class PlayerController : MonoBehaviour
             if (recoilXTimer >= 0.05f)
             {
                 StopRecoilX();
+                fireballRecoil = false;
             }
         }
 
@@ -544,6 +570,7 @@ public class PlayerController : MonoBehaviour
 
     public void TakeDamage(float _damage)
     {
+        if (ended || _damage == 0f) return; // Debug
         pState.healing = false;
         anim.SetBool("Healing", false);
         healTimer = 0;
@@ -631,6 +658,12 @@ public class PlayerController : MonoBehaviour
                 if (onHealthChangedCallback != null)
                 {
                     onHealthChangedCallback.Invoke();
+
+                    if (health <= 0 && !ended)
+
+                    {
+                        StartCoroutine(DeathSequence());
+                    }
                 }
             }
         }
@@ -752,6 +785,7 @@ public class PlayerController : MonoBehaviour
                 {
                     _fireBall.transform.eulerAngles = new Vector2(_fireBall.transform.eulerAngles.x, 180);
                 }
+                fireballRecoil = true;
                 pState.recoilingX = true;
             }
             else if (yAxis > 0)
@@ -835,5 +869,30 @@ public class PlayerController : MonoBehaviour
         {
             jumpBufferCounter -= Time.deltaTime;
         }
+    }
+
+    public void Freeze()
+    {
+        ended = true;
+        pState.cutscene = true;   // stops every input and movement path
+        pState.invincible = true;
+        pState.healing = false;
+        pState.casting = false;
+        pState.dashing = false;
+        if (rb != null) rb.linearVelocity = Vector2.zero;
+        if (sr != null) sr.material.color = Color.white; // not stuck mid-flash
+    }
+
+    private IEnumerator DeathSequence()
+    {
+        Freeze();
+
+        yield return new WaitForSecondsRealtime(0.25f); // let the hit-stop moment land
+        Time.timeScale = 1f;                           
+
+        if (anim != null) anim.SetTrigger("Death");
+
+        yield return new WaitForSeconds(deathAnimTime);
+        Died?.Invoke();
     }
 }

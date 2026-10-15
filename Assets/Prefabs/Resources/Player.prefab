@@ -259,7 +259,7 @@ GameObject:
   - component: {fileID: 1758616168486426132}
   - component: {fileID: 3840122570363185790}
   - component: {fileID: 7085527301333481250}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -276,7 +276,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 2, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.3, y: 1.3, z: 1.3}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8698651640115183815}
@@ -460,6 +460,7 @@ MonoBehaviour:
   recoilYTimer: 0
   recoilXSpeed: 30
   recoilYSpeed: 25
+  fireballRecoilSpeed: 20
   health: 0
   maxHealth: 10
   bloodSpurt: {fileID: 3931099496199182528, guid: aa73e4ef057863c4c8913527136ee462, type: 3}
@@ -475,6 +476,7 @@ MonoBehaviour:
   sideSpellFireball: {fileID: 4254958299305551972, guid: 0a1f2fc4e5ce15046856c62074ceba99, type: 3}
   upSpellExplosion: {fileID: 5957369055687265137, guid: 8bca0907bd78a264381cd00d17b577d4, type: 3}
   downSpellFireball: {fileID: 3128107443930258011}
+  deathAnimTime: 1.2
   pState: {fileID: 0}
 --- !u!114 &3840122570363185790
 MonoBehaviour:
@@ -497,6 +499,7 @@ MonoBehaviour:
   healing: 0
   casting: 0
   cutscene: 0
+  hasKey: 0
 --- !u!95 &7085527301333481250
 Animator:
   serializedVersion: 7
