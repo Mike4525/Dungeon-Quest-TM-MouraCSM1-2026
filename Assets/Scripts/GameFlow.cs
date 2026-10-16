@@ -24,6 +24,15 @@ public static class GameFlow
         }
         RunStartTime = Time.realtimeSinceStartup;
 
+        if (firstScene == "Tuto_1")
+        {
+            GameManager.Instance.roomsCleared = -1;
+        }
+        else
+        {
+            GameManager.Instance.roomsCleared = 0;
+        }
+
         SceneManager.LoadScene(firstScene);
     }
 
@@ -33,8 +42,6 @@ public static class GameFlow
         returning = true;
 
         Time.timeScale = 1f;
-        Debug.Log("[GameFlow] Returning to Main Menu. Loading scene...");
-
         SceneManager.LoadScene(MenuScene);
     }
 }

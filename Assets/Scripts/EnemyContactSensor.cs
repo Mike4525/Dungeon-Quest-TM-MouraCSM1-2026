@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Collider2D))]
+[RequireComponent(typeof(Collider2D))] // Debug
 public class EnemyContactSensor : MonoBehaviour
 {
     private Enemy enemy;
@@ -8,7 +8,7 @@ public class EnemyContactSensor : MonoBehaviour
     private void Awake()
     {
         enemy = GetComponentInParent<Enemy>();
-        GetComponent<Collider2D>().isTrigger = true;
+        GetComponent<Collider2D>().isTrigger = true; // Debug
     }
 
     private void OnTriggerStay2D(Collider2D other)

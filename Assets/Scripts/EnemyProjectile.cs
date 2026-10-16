@@ -4,8 +4,8 @@ using UnityEngine;
 public class EnemyProjectile : MonoBehaviour
 {
     [Header("Arc")]
-    [SerializeField] private float gravityScale = 2f;      // higher = steeper, faster arc
-    [SerializeField] private float horizontalSpeed = 6f;   // sets flight time from distance
+    [SerializeField] private float gravityScale = 2f;  
+    [SerializeField] private float horizontalSpeed = 6f;   
     [SerializeField] private float flightTimeMin = 0.8f;
     [SerializeField] private float flightTimeMax = 1.5f;
     [SerializeField] private bool faceVelocity = true;

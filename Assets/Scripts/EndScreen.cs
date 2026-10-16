@@ -40,7 +40,6 @@ public class EndScreen : MonoBehaviour
 
     private void Start()
     {
-        // The player is spawned in the same frame as the HUD, so bind here, not in Awake
         if (PlayerController.Instance != null)
         {
             PlayerController.Instance.Died += ShowLoss;
@@ -55,7 +54,6 @@ public class EndScreen : MonoBehaviour
         if (Instance == this) Instance = null;
     }
 
-    // A new scene (e.g. after Retry) always starts with the screen hidden
     private void OnSceneLoaded(Scene s, LoadSceneMode m) => HideImmediate();
 
     public void ShowLoss()
@@ -72,12 +70,7 @@ public class EndScreen : MonoBehaviour
     }
 
     public void OnRetryClicked() => GameFlow.StartNewGame("Cave_1_1");
-    public void OnMenuClicked()
-    {
-        Debug.Log("[EndScreen] Menu button clicked.");
-        GameFlow.ReturnToMenu();
-    }
-
+    public void OnMenuClicked() => GameFlow.ReturnToMenu();
     private IEnumerator ShowRoutine(string title, string subtitle, Color tint, bool showStats)
     {
         EnsureEventSystem();
@@ -85,9 +78,9 @@ public class EndScreen : MonoBehaviour
         titleText.text = title;
         subtitleText.text = subtitle;
         background.color = tint;
-        statsText.text = showStats ? "Time  " + FormatTime(Time.realtimeSinceStartup - GameFlow.RunStartTime) : "Rooms cleared : roomsCleared";
+        statsText.text = showStats ? "Time  " + FormatTime(Time.realtimeSinceStartup - GameFlow.RunStartTime) : "Rooms cleared : " + GameManager.Instance.roomsCleared;
 
-        group.blocksRaycasts = true; // swallow clicks while visible
+        group.blocksRaycasts = true;
         yield return Fade(group, 1f, fadeTime);
 
         yield return new WaitForSecondsRealtime(buttonDelay); 
@@ -96,7 +89,7 @@ public class EndScreen : MonoBehaviour
         buttonsGroup.blocksRaycasts = true;
         yield return Fade(buttonsGroup, 1f, 0.4f);
 
-        Time.timeScale = 0f; // freeze the world behind the screen
+        Time.timeScale = 0f;
     }
 
     private IEnumerator Fade(CanvasGroup g, float to, float duration)

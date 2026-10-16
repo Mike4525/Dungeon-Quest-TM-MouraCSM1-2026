@@ -97,7 +97,7 @@ public class PlayerController : MonoBehaviour
     [Header("Death Settings")]
     [SerializeField] private float deathAnimTime = 1.2f;
     public event System.Action Died;
-    private bool ended;   // true once the player has died or won
+    private bool ended;
     [Space(5)]
 
     [HideInInspector] public PlayerStateList pState;
@@ -382,8 +382,6 @@ public class PlayerController : MonoBehaviour
     public IEnumerator WalkIntoNewScene(Vector2 _exitDir, float _delay)
     {
         pState.cutscene = true;
-
-        // Reset velocity on spawn
         if (rb != null)
         {
             rb.linearVelocity = Vector2.zero;
@@ -395,15 +393,12 @@ public class PlayerController : MonoBehaviour
         {
             timer += Time.deltaTime;
 
-            // Force walk direction
             if (_exitDir.x != 0)
             {
                 xAxis = _exitDir.x > 0 ? 1 : -1;
                 Move();
             }
 
-            // If the player walks off a ledge during the entrance cutscene, 
-            // cancel the forced walk so they don't get launched horizontally in mid-air
             if (!Grounded())
             {
                 break;
@@ -412,14 +407,12 @@ public class PlayerController : MonoBehaviour
             yield return null;
         }
 
-        // Stop horizontal force immediately
         xAxis = 0;
         if (rb != null)
         {
             rb.linearVelocity = new Vector2(0, rb.linearVelocityY);
         }
 
-        // Restore player control
         pState.cutscene = false;
         canDash = true;
         dashed = false;
@@ -874,7 +867,7 @@ public class PlayerController : MonoBehaviour
     public void Freeze()
     {
         ended = true;
-        pState.cutscene = true;   // stops every input and movement path
+        pState.cutscene = true;
         pState.invincible = true;
         pState.healing = false;
         pState.casting = false;
@@ -887,7 +880,7 @@ public class PlayerController : MonoBehaviour
     {
         Freeze();
 
-        yield return new WaitForSecondsRealtime(0.25f); // let the hit-stop moment land
+        yield return new WaitForSecondsRealtime(0.25f); 
         Time.timeScale = 1f;                           
 
         if (anim != null) anim.SetTrigger("Death");

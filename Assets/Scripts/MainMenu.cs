@@ -7,7 +7,7 @@ public class MainMenu : MonoBehaviour
 
     private void Start()
     {
-        Time.timeScale = 1f; // in case we arrive from a hit stop or a pause
+        Time.timeScale = 1f; 
 
         GameFlow.ResetGuards();
         if (PlayerController.Instance != null) Object.Destroy(PlayerController.Instance.gameObject);
@@ -17,13 +17,4 @@ public class MainMenu : MonoBehaviour
 
     public void OnPlayClicked() => GameFlow.StartNewGame(firstRoomScene);
     public void OnTutorialClicked() => GameFlow.StartNewGame(tutorialScene);
-
-    public void OnQuitClicked()
-    {
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false; // Application.Quit does nothing in the editor
-#else
-        Application.Quit();
-#endif
-    }
 }

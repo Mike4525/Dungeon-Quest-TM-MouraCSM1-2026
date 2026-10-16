@@ -73,7 +73,6 @@ public class BossEnemy : Enemy
     {
         base.Update();
         if (isDead) return;
-        // Face player during choosing phase
         if (currentBossState == BossState.Choosing && player != null)
         {
             FacePlayer();
@@ -157,7 +156,7 @@ public class BossEnemy : Enemy
                 nextDropTime = Time.time + dropInterval;
                 Vector2 dropPos = firePoint != null ? (Vector2)firePoint.position : rb.position;
                 EnemyProjectile p = Instantiate(projectilePrefab, dropPos, Quaternion.identity);
-                p.Drop(acidDamage); // falls straight down (see the EnemyProjectile addition from my last message)
+                p.Drop(acidDamage); // Different method for different physics
             }
 
             yield return new WaitForFixedUpdate();
@@ -179,31 +178,31 @@ public class BossEnemy : Enemy
         yield return MoveTo(new Vector2(startEdgeX, rb.position.y), flightSpeed);
         if (isDead) yield break;
 
-        // 2. Lower to the ground (the timeout covers the floor stopping it early)
+        // 2. Lower
         yield return MoveTo(new Vector2(rb.position.x, groundLevelY), flightSpeed, 2f);
         if (isDead) yield break;
 
-        // 3. Telegraph, facing the direction of the lunge
+        // 3. Warning
         Face(lungeDir > 0f);
         if (anim != null) anim.SetTrigger("Warning");
         yield return new WaitForSeconds(lungeDelay);
         if (isDead) yield break;
 
-        // 4. Lunge until the wall stops it
+        // 4. Lunge
         if (anim != null) anim.SetTrigger("Lunge");
         damage = lungeDamage;
 
-        float grace = 0.15f;  // time to build up speed before the "blocked" check starts
+        float moveTime = 0.15f;
         float timeout = 3f;
 
         while (!isDead && timeout > 0f)
         {
             rb.linearVelocity = new Vector2(lungeDir * lungeSpeed, 0f);
             timeout -= Time.fixedDeltaTime;
-            grace -= Time.fixedDeltaTime;
+            moveTime -= Time.fixedDeltaTime;
 
             bool pastBoundary = rb.position.x <= roomLeftBoundary || rb.position.x >= roomRightBoundary;
-            bool blocked = grace <= 0f && Mathf.Abs(rb.linearVelocity.x) < 1f; // pressed against the wall
+            bool blocked = moveTime <= 0f && Mathf.Abs(rb.linearVelocity.x) < 1f; 
 
             if (pastBoundary || blocked) break;
             yield return new WaitForFixedUpdate();
@@ -243,7 +242,7 @@ public class BossEnemy : Enemy
 
         if (anim != null) anim.SetTrigger("TrackStart");
 
-        // 1. Track the Player from above
+        // 1. Track Player from above
         float trackTimer = 0f;
         while (!isDead && trackTimer < trackingDuration)
         {
@@ -261,13 +260,13 @@ public class BossEnemy : Enemy
             yield return new WaitForFixedUpdate();
         }
 
-        // 2. Pause before the slam
+        // 2. Pause
         rb.linearVelocity = Vector2.zero;
         if (anim != null) anim.SetTrigger("Warning");
         yield return new WaitForSeconds(slamDelay);
         if (isDead) yield break;
 
-        // 3. Slam down
+        // 3. Slam 
         if (anim != null) anim.SetTrigger("Slam");
         damage = slamDamage;
 
@@ -288,7 +287,7 @@ public class BossEnemy : Enemy
 
         rb.linearVelocity = Vector2.zero;
 
-        // 4. Post-slam vulnerability window
+        // 4. Stun
         currentBossState = BossState.Stunned;
         damage = 0f;
         if (anim != null) anim.SetTrigger("Stunned");
@@ -343,17 +342,17 @@ public class BossEnemy : Enemy
         }
     }
 
-    protected override void PatrolCheck() { } // the base version would flip and nudge the boss at walls
+    protected override void PatrolCheck() { } // Block base.PatrolCheck()
 
     protected override void Die()
     {
-        StopAllCoroutines();   // must come BEFORE base.Die(), which starts the death routine
+        StopAllCoroutines();
         base.Die();
     }
 
-    public override void EnemyHit(float _damageDone, Vector2 _hitDirection, float _hitForce)
+    public override void EnemyHit(float _damageDone, Vector2 _hitDirection, float _hitForce) // No recoil
     {
         if (isDead) return;
-        health -= _damageDone; // damage only, no knockback
+        health -= _damageDone;
     }
 }

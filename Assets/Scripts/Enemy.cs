@@ -10,7 +10,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] protected bool contactDamage = true;
 
     [Header("Recoil Settings")]
-    [SerializeField] protected float recoilLength = 0.08f; // Reduced from 0.2f for a shorter recoil
+    [SerializeField] protected float recoilLength = 0.08f;
     [SerializeField] protected float recoilFactor = 1f;
     [SerializeField] protected bool isRecoiling = false;
 
@@ -45,10 +45,6 @@ public class Enemy : MonoBehaviour
             rb.constraints = RigidbodyConstraints2D.FreezeRotation;
         }
 
-        // Keep 3D rotation clean
-        transform.eulerAngles = Vector3.zero;
-
-        // Apply scale based on initial facing direction
         Vector3 scale = transform.localScale;
         scale.x = facingRight ? Mathf.Abs(scale.x) : -Mathf.Abs(scale.x);
         transform.localScale = scale;
@@ -78,17 +74,14 @@ public class Enemy : MonoBehaviour
 
     protected virtual void Move()
     {
-        // Explicitly set world direction: true = Right (+X), false = Left (-X)
         float moveDirection = facingRight ? 1f : -1f;
         rb.linearVelocity = new Vector2(moveDirection * speed, rb.linearVelocityY);
     }
 
     protected virtual void PatrolCheck()
     {
-        // Explicit world vector matching current movement direction
         Vector2 moveVector = facingRight ? Vector2.right : Vector2.left;
 
-        // 1. Check for Walls directly ahead
         if (wallCheck != null)
         {
             RaycastHit2D hitWall = Physics2D.Raycast(wallCheck.position, moveVector, checkDistance, whatIsGround);
@@ -100,7 +93,6 @@ public class Enemy : MonoBehaviour
             }
         }
 
-        // 2. Check for Ledges/Pits directly below
         if (pitCheck != null)
         {
             RaycastHit2D hitGround = Physics2D.Raycast(pitCheck.position, Vector2.down, checkDistance, whatIsGround);
@@ -116,7 +108,6 @@ public class Enemy : MonoBehaviour
     {
         facingRight = !facingRight;
 
-        // Mirror scale to flip artwork & child transforms
         Vector3 scale = transform.localScale;
         scale.x *= -1f;
         transform.localScale = scale;
@@ -125,7 +116,6 @@ public class Enemy : MonoBehaviour
         {
             rb.linearVelocity = new Vector2(0f, rb.linearVelocityY);
 
-            // Nudge out of walls in the NEW direction
             float stepOutDirection = facingRight ? 0.05f : -0.05f;
             rb.position = new Vector2(rb.position.x + stepOutDirection, rb.position.y);
         }
@@ -141,7 +131,6 @@ public class Enemy : MonoBehaviour
             }
             else
             {
-                // End recoil state and reset timer cleanly
                 isRecoiling = false;
                 recoilTimer = 0f;
             }
@@ -158,7 +147,7 @@ public class Enemy : MonoBehaviour
             rb.simulated = false; // no more collisions, so it can't hurt the player or take hits
         }
 
-        if (TryGetComponent(out Animator anim)) // Stops null exception errors
+        if (TryGetComponent(out Animator anim))
         {
             anim.SetTrigger("Dying");
         }
@@ -184,12 +173,10 @@ public class Enemy : MonoBehaviour
         isRecoiling = true;
         recoilTimer = 0f;
 
-        // Set velocity directly: instant and independent of Rigidbody mass.
-        // Direction keeps the same sign convention as your current callers (player, fireball, spell).
         rb.linearVelocity = -_hitDirection.normalized * (_hitForce * recoilFactor);
     }
 
-    public void NotifyPlayerContact() // Layer mask addaptation for collisions with external script
+    public void NotifyPlayerContact() 
     {
         if (isDead) return;
         OnPlayerContact();
@@ -197,7 +184,6 @@ public class Enemy : MonoBehaviour
 
     protected virtual void OnPlayerContact()
     {
-        // Default behavior, unchanged: touching hurts (RollingEnemy keeps using this)
         if (player != null && !player.pState.invincible)
         {
             Attack();
