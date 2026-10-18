@@ -60,22 +60,24 @@ public class SceneTransition : MonoBehaviour
             GameManager.Instance.transitionedFromScene = "Right_Exit_Triggered";
             PlayerController.Instance.pState.cutscene = true;
 
-            // Track progress
             GameManager.Instance.roomsCleared++;
             string nextScene;
 
-            if (GameManager.Instance.roomsCleared == 11)
+            if (GameManager.Instance.roomsCleared == 0)
             {
-                nextScene = "Pre_Boss" + Random.Range(1, 4).ToString();
+                nextScene = "Cave_1_1";
             }
-            else if (GameManager.Instance.roomsCleared == 12)
+            else if (GameManager.Instance.roomsCleared == 10)
+            {
+                nextScene = "Pre_Boss_" + Random.Range(1, 4).ToString();
+            }
+            else if (GameManager.Instance.roomsCleared == 11)
             {
                 nextScene = "Boss_Cave";
             }
             else
             {
-                // Random room logic
-                nextScene = "Cave_1_" + Random.Range(1, 4).ToString();
+                nextScene = "Cave_" + GameManager.Instance.RandomSceneIndex() + "_" + Random.Range(1, 4).ToString();
             }
 
             SceneManager.LoadScene(nextScene);

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -5,6 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public string transitionedFromScene;
     public int roomsCleared;
+    public List<string> sceneIndex = new List<string> ();
     public static GameManager Instance { get; private set; }
 
     private void Awake()
@@ -41,5 +43,14 @@ public class GameManager : MonoBehaviour
             Destroy(Instance.gameObject);
             Instance = null;
         }
+    }
+
+    public string RandomSceneIndex()
+    {
+        int i = Random.Range(0, sceneIndex.Count);
+        string index = sceneIndex[i];
+        sceneIndex.RemoveAt(i);
+        Debug.Log(sceneIndex);
+        return index;
     }
 }

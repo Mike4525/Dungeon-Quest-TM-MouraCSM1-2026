@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -32,6 +33,8 @@ public static class GameFlow
         {
             GameManager.Instance.roomsCleared = 0;
         }
+
+        GameManager.Instance.sceneIndex = new List<string> { "2", "3", "4", "5", "6", "7", "8", "9", "10" };
 
         SceneManager.LoadScene(firstScene);
     }

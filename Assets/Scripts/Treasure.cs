@@ -10,6 +10,5 @@ public class Treasure : MonoBehaviour
         collected = true;
 
         EndScreen.Instance?.ShowWin();
-        // later: particles, a sound, hide the chest sprite here
     }
 }

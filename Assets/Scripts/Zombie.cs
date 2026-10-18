@@ -44,9 +44,9 @@ public class Zombie : Enemy
         base.Update();
         if (isDead) return;
 
-        if (isRecoiling)
+        if (isRecoiling && canBeInterrupted)
         {
-            if (state == State.Windup && canBeInterrupted) CancelAttack(); // Interrupts attack
+            if (state == State.Windup) CancelAttack(); // Interrupts attack
             return;
         }
 

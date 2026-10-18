@@ -6,26 +6,25 @@ public class FlyingEnemy : Enemy
     protected enum State { Patrol, Hunt }
 
     [Header("Hovering")]
-    [SerializeField] private float hoverHeight = 3f;        // preferred height above the ground
-    [SerializeField] private float minHeight = 1.5f;        // never dips below this, even while hunting
-    [SerializeField] private float hoverSpeed = 2f;         // max vertical correction speed
+    [SerializeField] private float hoverHeight = 3f; 
+    [SerializeField] private float minHeight = 1.5f;
+    [SerializeField] private float hoverSpeed = 2f;
     [SerializeField] private float groundSearchDistance = 12f;
 
     [Header("Patrol")]
-    [SerializeField] private float patrolDistance = 4f;     // how far from its start point it drifts
+    [SerializeField] private float patrolDistance = 4f;
 
     [Header("Hunting")]
     [SerializeField] private float huntRange = 8f;
-    [SerializeField] private float loseInterestRange = 12f; // keep larger than huntRange
+    [SerializeField] private float loseInterestRange = 12f; 
     [SerializeField] private float chaseSpeed = 4f;
-    [SerializeField] private float preferredDistance = 5f;  // radius of the ring it keeps around the player
-    [SerializeField] private float distanceTolerance = 0.75f; // no radial movement inside ring ± this
+    [SerializeField] private float preferredDistance = 5f; 
+    [SerializeField] private float distanceTolerance = 0.75f; 
     [SerializeField] private float acceleration = 20f;
-    [SerializeField] private float turnDeadZone = 0.5f;     // stops flickering when the player is right above/below
-
+    [SerializeField] private float turnDeadZone = 0.5f;  
     [Header("Shooting")]
     [SerializeField] private EnemyProjectile projectilePrefab;
-    [SerializeField] private Transform firePoint;           // optional, defaults to the enemy's center
+    [SerializeField] private Transform firePoint;   
     [SerializeField] private float shootRange = 7f;
     [SerializeField] private float shootCooldown = 2f;
     [SerializeField] private float launchDelay = 0.4f;
@@ -39,7 +38,7 @@ public class FlyingEnemy : Enemy
     protected override void Start()
     {
         base.Start();
-        col = GetComponent<Collider2D>(); // Allows to get the dimensions of the enemy hitbox
+        col = GetComponent<Collider2D>(); 
         startX = transform.position.x;
 
         anim = GetComponent<Animator>();
@@ -121,7 +120,7 @@ public class FlyingEnemy : Enemy
     private float HoverVelocityY()
     {
         float g = GroundDistance();
-        if (float.IsInfinity(g)) return 0f; // nothing below: hold altitude
+        if (float.IsInfinity(g)) return 0f;
 
         float target = hoverHeight;
         return Mathf.Clamp((target - g) * 3f, -hoverSpeed, hoverSpeed);
