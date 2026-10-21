@@ -816,8 +816,17 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKeyUp(KeyCode.Space) && rb.linearVelocityY > 0)
         {
-            rb.linearVelocity = new Vector2(rb.linearVelocityX, rb.linearVelocityY * 0.35f);
+            if (rb.linearVelocityY > 0)
+            {
+                rb.linearVelocity = new Vector2(rb.linearVelocityX, rb.linearVelocityY * 0.35f);
+            }
+                
             jumpBufferCounter = 0;
+            pState.jumping = false;
+        }
+
+        if (pState.jumping && rb.linearVelocityY <= 0.01f && !Grounded())
+        {
             pState.jumping = false;
         }
 
