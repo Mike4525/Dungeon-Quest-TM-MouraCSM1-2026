@@ -99,6 +99,15 @@ EditorBuildSettings:
     path: Assets/Scenes/Cave_9_3.unity
     guid: 2d3fa90f88953634cb6a7bb692108f02
   - enabled: 1
+    path: Assets/Scenes/Cave_10_1.unity
+    guid: e16c5498fb2f4eb46a534b69ed17ab7b
+  - enabled: 1
+    path: Assets/Scenes/Cave_10_2.unity
+    guid: 1dc5c856b9f747642be646c2a0df329e
+  - enabled: 1
+    path: Assets/Scenes/Cave_10_3.unity
+    guid: b0717556056f06c48aeac746aad089a4
+  - enabled: 1
     path: Assets/Scenes/Pre_Boss_1.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
   - enabled: 1

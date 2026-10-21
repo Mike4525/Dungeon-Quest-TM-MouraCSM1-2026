@@ -19548,7 +19548,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1611143021}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
@@ -22330,7 +22330,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7737771263481861556, guid: bba37e2d03ffdf24f90d2299bc70015b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 30.21
+      value: 29.99
       objectReference: {fileID: 0}
     - target: {fileID: 7737771263481861556, guid: bba37e2d03ffdf24f90d2299bc70015b, type: 3}
       propertyPath: m_LocalPosition.z
@@ -24650,7 +24650,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2055398629}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}

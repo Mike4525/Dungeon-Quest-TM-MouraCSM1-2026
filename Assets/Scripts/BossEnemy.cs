@@ -89,6 +89,7 @@ public class BossEnemy : Enemy
         while (!isDead)
         {
             currentBossState = BossState.Choosing;
+            if (anim != null) anim.SetTrigger("Idle");
             damage = bossContactDamage;
             yield return new WaitForSeconds(timeBetweenAttacks);
 
@@ -128,6 +129,7 @@ public class BossEnemy : Enemy
         currentBossState = BossState.AcidRainDash;
 
         // 1. Go to the nearest edge
+        if (anim != null) anim.SetTrigger("Walk");
         bool isOnRightSide = rb.position.x > (roomLeftBoundary + roomRightBoundary) / 2f;
         float startEdgeX = isOnRightSide ? roomRightBoundary - bossWidth : roomLeftBoundary + bossWidth;
         float endEdgeX = isOnRightSide ? roomLeftBoundary + bossWidth : roomRightBoundary - bossWidth;
@@ -138,7 +140,7 @@ public class BossEnemy : Enemy
         if (isDead) yield break;
 
         // 2. Dash and drop acid
-        if (anim != null) anim.SetTrigger("AcidRainDash");
+        if (anim != null) anim.SetTrigger("Prep");
         
         float targetX = isOnRightSide ? roomLeftBoundary + bossWidth : roomRightBoundary - bossWidth;
         Face(dashDir > 0f);
@@ -170,6 +172,7 @@ public class BossEnemy : Enemy
         currentBossState = BossState.Lunge;
 
         // 1. Go to the nearest edge
+        if (anim != null) anim.SetTrigger("Walk");
         bool isOnRightSide = rb.position.x > (roomLeftBoundary + roomRightBoundary) / 2f;
         float startEdgeX = isOnRightSide ? roomRightBoundary - bossWidth : roomLeftBoundary + bossWidth;
         float lungeDir = isOnRightSide ? -1f : 1f;
@@ -184,12 +187,11 @@ public class BossEnemy : Enemy
 
         // 3. Warning
         Face(lungeDir > 0f);
-        if (anim != null) anim.SetTrigger("Warning");
+        if (anim != null) anim.SetTrigger("Prep");
         yield return new WaitForSeconds(lungeDelay);
         if (isDead) yield break;
 
         // 4. Lunge
-        if (anim != null) anim.SetTrigger("Lunge");
         damage = lungeDamage;
 
         float moveTime = 0.15f;
@@ -213,14 +215,13 @@ public class BossEnemy : Enemy
         // 5. Stun
         currentBossState = BossState.Stunned;
         damage = 0f;
-        if (anim != null) anim.SetTrigger("Stunned");
         yield return new WaitForSeconds(stunDuration);
     }
 
     private IEnumerator SpawnMinion()
     {
         currentBossState = BossState.SpawnMinion;
-        if (anim != null) anim.SetTrigger("Spawn");
+        if (anim != null) anim.SetTrigger("Prep");
 
         yield return new WaitForSeconds(spawnDelay);
 
@@ -239,8 +240,6 @@ public class BossEnemy : Enemy
     private IEnumerator Slam()
     {
         currentBossState = BossState.Slam;
-
-        if (anim != null) anim.SetTrigger("TrackStart");
 
         // 1. Track Player from above
         float trackTimer = 0f;
@@ -262,12 +261,11 @@ public class BossEnemy : Enemy
 
         // 2. Pause
         rb.linearVelocity = Vector2.zero;
-        if (anim != null) anim.SetTrigger("Warning");
+        if (anim != null) anim.SetTrigger("Prep");
         yield return new WaitForSeconds(slamDelay);
         if (isDead) yield break;
 
         // 3. Slam 
-        if (anim != null) anim.SetTrigger("Slam");
         damage = slamDamage;
 
         float grace = 0.1f;
@@ -290,7 +288,6 @@ public class BossEnemy : Enemy
         // 4. Stun
         currentBossState = BossState.Stunned;
         damage = 0f;
-        if (anim != null) anim.SetTrigger("Stunned");
         yield return new WaitForSeconds(1.5f);
     }
 
