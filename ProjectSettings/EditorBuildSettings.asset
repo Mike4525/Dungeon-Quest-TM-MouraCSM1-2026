@@ -5,9 +5,6 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/Scenes/Cave_1_smaller.unity
-    guid: 8c9cfa26abfee488c85f1582747f6a02
   - enabled: 1
     path: Assets/Scenes/MainMenu.unity
     guid: 66ab4ff81e532634abdbb79e3b9aacf6
@@ -15,23 +12,101 @@ EditorBuildSettings:
     path: Assets/Scenes/Tuto_1.unity
     guid: ae26a38b2386cde4b8ba3cb11d867fa9
   - enabled: 1
-    path: Assets/Scenes/Cave_1_1.unity
-    guid: 549fa91ef5727fc4b8173c88fb9997ae
-  - enabled: 1
-    path: Assets/Scenes/Cave_2.unity
-    guid: cc1b9df7bb11b51468c1d98601428640
-  - enabled: 1
-    path: Assets/Scenes/Cave_1_2.unity
-    guid: ee5f2179115f0334a834a131997ba34a
-  - enabled: 1
-    path: Assets/Scenes/Cave_1_3.unity
-    guid: 6780d997c2bc9054ebdb8941899e5337
+    path: Assets/Scenes/Tuto_2.unity
+    guid: 0281ec521a8043f40bc2dcf0203fb9f1
   - enabled: 1
     path: Assets/Scenes/Tuto_3.unity
     guid: 11796156065e0c946b29a7ae58a2ef36
   - enabled: 1
-    path: Assets/Scenes/Tuto_2.unity
-    guid: 0281ec521a8043f40bc2dcf0203fb9f1
+    path: Assets/Scenes/Cave_1_1.unity
+    guid: a36bb7c9cf7cfea4e80e482e17c948b2
+  - enabled: 1
+    path: Assets/Scenes/Cave_1_2.unity
+    guid: 589bba029d097ac43b0078b5f3a459c8
+  - enabled: 1
+    path: Assets/Scenes/Cave_1_3.unity
+    guid: 3fa38be23a1fc4c42981043407d46ac6
+  - enabled: 1
+    path: Assets/Scenes/Cave_2_1.unity
+    guid: bb508848e9004524aa9979a84ef4f095
+  - enabled: 1
+    path: Assets/Scenes/Cave_2_2.unity
+    guid: 2dd5a82808352c943be41f32aaabea06
+  - enabled: 1
+    path: Assets/Scenes/Cave_2_3.unity
+    guid: 66b053d51b7334745aca9d974ff70985
+  - enabled: 1
+    path: Assets/Scenes/Cave_3_1.unity
+    guid: cc1b9df7bb11b51468c1d98601428640
+  - enabled: 1
+    path: Assets/Scenes/Cave_3_2.unity
+    guid: c6357dfdffa36ed4e8eaa623f88e81a9
+  - enabled: 1
+    path: Assets/Scenes/Cave_3_3.unity
+    guid: 63c5ff7ec1128d945b42993a9e8e7fed
+  - enabled: 1
+    path: Assets/Scenes/Cave_4_1.unity
+    guid: 7ad8b95cdf833c84ea6951c43432a930
+  - enabled: 1
+    path: Assets/Scenes/Cave_4_2.unity
+    guid: 5119dfadff814ce44a2fba08956c1d23
+  - enabled: 1
+    path: Assets/Scenes/Cave_4_3.unity
+    guid: 67a381bdd8291a545a6a00c3faaa7eed
+  - enabled: 1
+    path: Assets/Scenes/Cave_5_1.unity
+    guid: 520489e7cf514de48b92fb5c24bd78e1
+  - enabled: 1
+    path: Assets/Scenes/Cave_5_2.unity
+    guid: c2dec28e489c0614c9100ef453b53793
+  - enabled: 1
+    path: Assets/Scenes/Cave_5_3.unity
+    guid: 93dea3444e36ea142a3203c9553a64d2
+  - enabled: 1
+    path: Assets/Scenes/Cave_6_1.unity
+    guid: 549fa91ef5727fc4b8173c88fb9997ae
+  - enabled: 1
+    path: Assets/Scenes/Cave_6_2.unity
+    guid: 4c3af7a5fdec58c42b81da436985e80b
+  - enabled: 1
+    path: Assets/Scenes/Cave_6_3.unity
+    guid: 359c40ec9f4516d468b5343fc27f3770
+  - enabled: 1
+    path: Assets/Scenes/Cave_7_1.unity
+    guid: 73e11cc91990974469424ac3edcf4297
+  - enabled: 1
+    path: Assets/Scenes/Cave_7_2.unity
+    guid: adbbc0bf93da86d4f95d0ab82b7ed225
+  - enabled: 1
+    path: Assets/Scenes/Cave_7_3.unity
+    guid: 65b7e25c6da074c498a6489ffd52581d
+  - enabled: 1
+    path: Assets/Scenes/Cave_8_1.unity
+    guid: bc8ffdd93339acb409b12b0b5eaf0ae5
+  - enabled: 1
+    path: Assets/Scenes/Cave_8_2.unity
+    guid: 0664c93532413bf4eb13b9d5133fc1cd
+  - enabled: 1
+    path: Assets/Scenes/Cave_8_3.unity
+    guid: 488188c4fc583de4e836c471240158e5
+  - enabled: 1
+    path: Assets/Scenes/Cave_9_1.unity
+    guid: c60801230803cd34492567ff3b5a546c
+  - enabled: 1
+    path: Assets/Scenes/Cave_9_2.unity
+    guid: b6fd6e9005399e34983b7642ba2ad535
+  - enabled: 1
+    path: Assets/Scenes/Cave_9_3.unity
+    guid: 2d3fa90f88953634cb6a7bb692108f02
+  - enabled: 1
+    path: Assets/Scenes/Pre_Boss_1.unity
+    guid: 8c9cfa26abfee488c85f1582747f6a02
+  - enabled: 1
+    path: Assets/Scenes/Pre_Boss_2.unity
+    guid: ec505de98c1950847b29c4c66710ce46
+  - enabled: 1
+    path: Assets/Scenes/Pre_Boss_3.unity
+    guid: c47fff5b2e9679d4093fe79b8c936f21
   - enabled: 1
     path: Assets/Scenes/Boss_Cave.unity
     guid: 8146b427e1d732b4d8d53b125f457874
